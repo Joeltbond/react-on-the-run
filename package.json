@@ -11,5 +11,25 @@
   "dependencies": {
     "gulp": "~3.8.11",
     "gulp-react": "~2.0.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "browser": true
+    },
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "jsx": true,
+      "objectLiteralShorthandMethods": true,
+      "blockBindings": true
+    },
+    "globals": {
+      "React": false,
+      "document": false
+    },
+    "rules": {
+      "quotes": [1, "single", "avoid-escape"],
+      "strict": [1, "function"]
+    }
   }
 }

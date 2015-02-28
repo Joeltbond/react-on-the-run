@@ -1,55 +1,53 @@
-(function () {
+(function() {
+    'use strict';
     var Synth = React.createClass({
-            render: function () {
-                return (
-                    <div>
-                        <ControlPanel />
-                        <Sequencer />
-                    </div>
-                );
+        render() {
+            return (
+                <div>
+                    <ControlPanel />
+                    <Sequencer />
+                </div>
+            );
+        }
+    });
+    var ControlPanel = React.createClass({
+        render() {
+            return (
+                <div>
+                    control panel
+                </div>
+            );
+        }
+    });
+    var Sequencer = React.createClass({
+        render() {
+            var columns = [];
+            for (var i = 0; i < 8; i++) {
+                columns.push(<StepColumn selectedNote={i} />);
             }
-        }),
-
-        ControlPanel = React.createClass({
-            render: function () {
-                return (
-                    <div>
-                        control panel
-                    </div>
-                );
+            return (
+                <div>
+                    Sequencer
+                    {columns}
+                </div>
+            );
+        }
+    });
+    var StepColumn = React.createClass({
+        render() {
+            var buttons = [];
+            for (var i = 0; i < 8; i++) {
+                buttons.push(<input type="radio"
+                    data-note={i}
+                    checked={i === this.props.selectedNote} />);
             }
-        }),
-
-        Sequencer = React.createClass({
-            render: function () {
-                var columns = [];
-                for (var i=0; i < 8; i++) {
-                    columns.push(<StepColumn />);
-                }
-                return (
-                    <div>
-                        Sequencer
-                        {columns}
-                    </div>
-                )
-            }
-        }),
-
-        StepColumn = React.createClass({
-            render: function () {
-                var buttons = [];
-                for (var i = 0; i < 8; i++) {
-                    buttons.push(<input type="radio" />);
-                }
-                return (
-                    <form>
-                        {buttons}
-                    </form>
-                )
-            }
-        })
-
-
+            return (
+                <form>
+                    {buttons}
+                </form>
+            );
+        }
+    });
 
     React.render(<Synth />, document.getElementById('synth'));
 }());
