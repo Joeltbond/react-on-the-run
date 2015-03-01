@@ -19,6 +19,7 @@
                     step={index}
                     key={index}
                     onNoteChange={this.handleNoteChange}
+                    active={index === this.state.currentStep}
                     />);
             });
 
@@ -31,7 +32,8 @@
 
         getInitialState() {
             return {
-                pattern: [7, 6, 5, 4, 3, 2, 1, 0]
+                pattern: [7, 6, 5, 4, 3, 2, 1, 0],
+                currentStep: 0
             };
         },
 
@@ -55,7 +57,9 @@
                     />);
             }
             return (
-                <div className={'StepColumn col-' + this.props.step}>
+                <div className={'StepColumn col-'
+                    + this.props.step
+                    + (this.props.active ? ' active' : '')}>
                     {buttons}
                 </div>
             );

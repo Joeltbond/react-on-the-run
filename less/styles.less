@@ -16,19 +16,18 @@ html {
   box-sizing: inherit;
 }
 
+
 .Sequencer {
-  &:extend(.cf all);
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   display: inline-block;
 }
-
 .StepColumn {
   &:extend(cf all);
   float: left;
   width: 40px;
-}
 
+}
 input[type="radio"] {
   -webkit-appearance: none;
   border-left: 1px solid #ccc;
@@ -40,5 +39,11 @@ input[type="radio"] {
   width: 40px;
   &:checked {
     background-color: #CD8181;
+  }
+}
+.StepColumn.active input[type="radio"] {
+  background-color: #e7e7e7;
+  &:checked {
+    background-color: #77B677;
   }
 }
