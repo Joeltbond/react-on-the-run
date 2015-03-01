@@ -28,8 +28,18 @@
       "document": false
     },
     "rules": {
-      "quotes": [1, "single", "avoid-escape"],
-      "strict": [1, "function"]
+      "quotes": [
+        1,
+        "single",
+        "avoid-escape"
+      ],
+      "strict": [
+        1,
+        "function"
+      ]
     }
+  },
+  "devDependencies": {
+    "gulp-less": "~3.0.1"
   }
 }

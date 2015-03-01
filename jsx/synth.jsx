@@ -4,17 +4,7 @@
         render() {
             return (
                 <div>
-                    <ControlPanel />
                     <Sequencer />
-                </div>
-            );
-        }
-    });
-    var ControlPanel = React.createClass({
-        render() {
-            return (
-                <div>
-                    control panel
                 </div>
             );
         }
@@ -34,7 +24,6 @@
 
             return (
                 <div>
-                    Sequencer
                     {columns}
                 </div>
             );
@@ -42,7 +31,7 @@
 
         getInitialState() {
             return {
-                pattern: [0, 1, 2, 3, 4, 5, 6, 7]
+                pattern: [7, 6, 5, 4, 3, 2, 1, 0]
             };
         },
 
@@ -62,17 +51,17 @@
                     data-note={i}
                     checked={i === this.props.note}
                     key={i}
-                    onClick={this.handleClick.bind(this, i)}
+                    onChange={this.handleChange.bind(this, i)}
                     />);
             }
             return (
-                <form>
+                <div className={'StepColumn col-' + this.props.step}>
                     {buttons}
-                </form>
+                </div>
             );
         },
 
-        handleClick(note) {
+        handleChange(note) {
             this.props.onNoteChange(this.props.step, note);
         }
     });
