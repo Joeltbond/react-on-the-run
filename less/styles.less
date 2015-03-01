@@ -1,17 +1,44 @@
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.Sequencer {
+  &:extend(.cf all);
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  display: inline-block;
+}
+
 .StepColumn {
+  &:extend(cf all);
   float: left;
   width: 40px;
 }
 
 input[type="radio"] {
   -webkit-appearance: none;
-  border: 1px solid #666;
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   display: block;
   height: 40px;
   margin: 0;
   outline: none;
   width: 40px;
   &:checked {
-    background-color: red;
+    background-color: #CD8181;
   }
 }

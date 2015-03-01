@@ -23,7 +23,7 @@
             });
 
             return (
-                <div>
+                <div className="Sequencer">
                     {columns}
                 </div>
             );
