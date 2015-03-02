@@ -25,14 +25,19 @@
 
             return (
                 <div className="Sequencer">
-                    {columns}
+                    <div className="steps-wrapper">
+                        {columns}
+                    </div>
+                    <div className="transport">
+                        <button onClick={this.stepForward}>Step</button>
+                    </div>
                 </div>
             );
         },
 
         getInitialState() {
             return {
-                pattern: [7, 6, 5, 4, 3, 2, 1, 0],
+                pattern: [0, 1, 2, 3, 4, 5, 6, 7],
                 currentStep: 0
             };
         },
@@ -43,12 +48,18 @@
             this.setState({
                 pattern: pattern
             });
+        },
+
+        stepForward() {
+            var nextStep = this.state.currentStep === 7
+                ? 0 : this.state.currentStep + 1;
+            this.setState({currentStep: nextStep});
         }
     });
     var StepColumn = React.createClass({
         render() {
             var buttons = [];
-            for (var i = 0; i < 8; i++) {
+            for (var i = 7; i >= 0; i--) {
                 buttons.push(<input type="radio"
                     data-note={i}
                     checked={i === this.props.note}
