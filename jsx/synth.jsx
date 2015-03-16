@@ -1,43 +1,43 @@
 (function() {
     'use strict';
     var aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
-    
-    function Clock(noteType, bpm) {
-	this.speed = 60000/(bpm * (noteType/4));
+
+    class Clock {
+	constructor(noteType, bpm) {
+	    this.speed = 60000/(bpm * (noteType / 4));
+	}
+	
+	start(callback) {
+	    this.timer = window.setInterval(callback, this.speed);
+	}
+
+        stop() {
+	    window.clearInterval(this.timer)
+	}
     }
 
-    Clock.prototype.start = function (cb) {
-	this.timer = window.setInterval(cb, this.speed);
+    class SynthEngine {
+	constructor() {
+	    this.ctx = new window.AudioContext();
+	}
+
+	playNote(note) {
+	    this.osc = this.ctx.createOscillator();
+	    this.osc.frequency.value = note;
+
+	    if (this.oldOsc) {
+		this.oldOsc.stop();
+	    }
+	    this.osc.connect(this.ctx.destination);
+	    this.osc.start();
+	}
+	
+	stopLastNote() {
+	    if (this.osc) {
+		this.osc.stop();
+	    }
+	}
     }
-
-    Clock.prototype.stop = function () {
-	window.clearInterval(this.timer);
-    }
-
-    function SynthEngine() {
-        this.ctx = new window.AudioContext();
-    };
-
-    SynthEngine.prototype.playNote = function(note) {
-        this.osc = this.ctx.createOscillator();
-        this.osc.frequency.value = note;
-
-        if (this.oldOsc) {
-            this.oldOsc.stop();
-        }
-        this.oldOsc = this.osc;
-
-        // this.osc.type = 'triangle';
-        this.osc.connect(this.ctx.destination);
-        this.osc.start();
-
-    };
-
-    SynthEngine.prototype.stopLastNote = function() {
-        if (this.osc) {
-            this.osc.stop();
-        }
-    };
 
     var Synth = React.createClass({
         render() {
