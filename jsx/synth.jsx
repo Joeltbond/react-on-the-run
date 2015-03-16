@@ -1,8 +1,20 @@
 (function() {
     'use strict';
     var aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
+    
+    function Clock(noteType, bpm) {
+	this.speed = 60000/(bpm * (noteType/4));
+    }
 
-    var SynthEngine = function () {
+    Clock.prototype.start = function (cb) {
+	this.timer = window.setInterval(cb, this.speed);
+    }
+
+    Clock.prototype.stop = function () {
+	window.clearInterval(this.timer);
+    }
+
+    function SynthEngine() {
         this.ctx = new window.AudioContext();
     };
 
@@ -75,6 +87,9 @@
                             this.state.on ? 'off' : 'on'
                         }</button>
                         <button onClick = {this.stepForward}>Step</button>
+			<button onClick = {this.startOrStop}>{
+			    this.state.started ? 'stop' : 'start'
+			}</button>
                     </div>
                 </div>
             );
@@ -88,7 +103,8 @@
             return {
                 pattern: [0, 1, 2, 3, 4, 5, 6, 7],
                 currentStep: 0,
-                on: false
+                on: false,
+		started: false
             };
         },
 
@@ -110,7 +126,23 @@
             this.setState({
                 on: !this.state.on
             });
-        }
+        },
+	startSequence() {
+            this.clock = new Clock(8, 140);
+	    this.clock.start(this.stepForward);
+	    this.setState({started: true});
+	},
+	stopSequence() {
+	    this.clock.stop();
+	    this.setState({started: false});
+	},
+	startOrStop() {
+	    if (!this.state.started) {
+	        this.startSequence();
+	    } else {
+		this.stopSequence();
+	    }
+	} 
     });
     var StepColumn = React.createClass({
         render() {
