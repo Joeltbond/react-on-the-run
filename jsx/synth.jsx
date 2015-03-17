@@ -2,39 +2,91 @@
     'use strict';
     var aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
 
+    // Clock class
+    // -----------
+    // Controls timers based on given note values and bpms.
     class Clock {
+
+        /**
+         * @constructor
+         *
+         * Converts given note value and beats per minute (bpm) value
+         * to an interval in milliseconds and stores it as a property on
+         * a newly created clock object.
+         *
+         * @param {number} noteType Aj number representing the note
+         * value. E.g. 4 for quarter notes, 8 for eighth 
+         * notes, 1 for whole notes.
+         *
+         * @param {number} bpm Beats Per minute.
+         * */
 	constructor(noteType, bpm) {
 	    this.speed = 60000/(bpm * (noteType / 4));
 	}
 	
+        /**
+         * Repeatedly invoke a callback at the speed calculated by
+         * th constructor.
+         *
+         * @param {callback} callback The function to be invoked
+         * on the beat.
+         */
 	start(callback) {
 	    this.timer = window.setInterval(callback, this.speed);
 	}
 
+        /**
+         * Clear the timer.
+         * */
         stop() {
 	    window.clearInterval(this.timer)
 	}
     }
 
+    // SynthEngine class
+    // ----------------
+    //
+    // creates and keeps track of web audio oscillators
     class SynthEngine {
+
+        /**
+         * @constructor
+         *
+         * create a new web audio context;
+         *
+         **/
 	constructor() {
 	    this.ctx = new window.AudioContext();
 	}
 
+        /**
+         * Creates, connects, and starts a new note. Also
+         * stops the previous note if it exists (Sequencer is
+         * monophonic).
+         *
+         * @param {number} note Frequency value (in hertz) for the 
+         * note to be played.  
+         **/
 	playNote(note) {
-	    this.osc = this.ctx.createOscillator();
-	    this.osc.frequency.value = note;
+	    var newOsc = this.ctx.createOscillator();
+	    newOsc.frequency.value = note;
 
-	    if (this.oldOsc) {
-		this.oldOsc.stop();
-	    }
-	    this.osc.connect(this.ctx.destination);
-	    this.osc.start();
+            //stop the last note if it exists
+            this.stopLastNote();
+
+            //connect and play the new note.
+	    newOsc.connect(this.ctx.destination);
+	    newOsc.start();
+            
+            this.currentOsc = newOsc;
 	}
 	
+        /**
+         * stop the last note
+         **/
 	stopLastNote() {
-	    if (this.osc) {
-		this.osc.stop();
+	    if (this.currentOsc) {
+		this.currentOsc.stop();
 	    }
 	}
     }
@@ -48,8 +100,6 @@
             );
         }
     });
-
-    var theSynth;
 
     var Sequencer = React.createClass({
         render() {
@@ -66,11 +116,11 @@
                     />);
             });
 
-            if (theSynth) {
+            if (this.synth) {
                 if (this.state.on) {
-                    theSynth.playNote(aMinorNotes[this.state.pattern[this.state.currentStep]]);
+                    this.synth.playNote(aMinorNotes[this.state.pattern[this.state.currentStep]]);
                 } else {
-                    theSynth.stopLastNote();
+                    this.synth.stopLastNote();
                 }
             }
 
@@ -96,7 +146,7 @@
         },
 
         componentWillMount() {
-            theSynth = new SynthEngine();
+            this.synth = new SynthEngine();
         },
 
         getInitialState() {
