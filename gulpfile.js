@@ -6,7 +6,7 @@
         less = require('gulp-less');
 
     gulp.task('react', function () {
-        return gulp.src('jsx/synth.jsx')
+        return gulp.src('jsx/*.jsx')
             .pipe(react({harmony: true}))
             .pipe(gulp.dest('js'));
     });
