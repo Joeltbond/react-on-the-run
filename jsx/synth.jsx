@@ -56,7 +56,7 @@
          *
          **/
 	constructor() {
-	    this.ctx = new window.AudioContext();
+	    this.ctx = new (window.AudioContext || window.webkitAudioContext);
 	}
 
         /**
