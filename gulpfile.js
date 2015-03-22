@@ -2,13 +2,20 @@
     'use strict';
 
     var gulp = require('gulp'),
-        react = require('gulp-react'),
+        browserify = require('browserify'),
+        babelify = require('babelify'),
+        source = require('vinyl-source-stream'),
         less = require('gulp-less');
 
     gulp.task('react', function () {
-        return gulp.src('jsx/*.jsx')
-            .pipe(react({harmony: true}))
-            .pipe(gulp.dest('js'));
+        browserify({
+            entries: './jsx/app.jsx',
+            extensions: ['.jsx']
+        })
+        .transform(babelify)
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('js'));
     });
 
     gulp.task('less', function () {

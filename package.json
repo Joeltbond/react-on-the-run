@@ -9,8 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gulp": "~3.8.11",
-    "gulp-react": "~2.0.0"
+    "react": "^0.13.1"
   },
   "eslintConfig": {
     "env": {
@@ -40,6 +39,10 @@
     }
   },
   "devDependencies": {
-    "gulp-less": "~3.0.1"
+    "babelify": "^5.0.4",
+    "browserify": "^9.0.3",
+    "gulp": "^3.8.11",
+    "gulp-less": "~3.0.1",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
