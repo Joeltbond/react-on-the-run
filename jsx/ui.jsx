@@ -2,7 +2,7 @@
     'use strict';
     var aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
 
-    var Synth = React.createClass({
+    class Synth extends React.Component {
         render() {
             return (
                 <div>
@@ -10,9 +10,19 @@
                 </div>
             );
         }
-    });
+    }
+    
+    class Sequencer extends React.Component {
+        constructor() {
+            super();
+            this.state =  {
+                pattern: [0, 1, 2, 3, 4, 5, 6, 7],
+                currentStep: 0,
+                on: false,
+		started: false
+            }
+        }
 
-    var Sequencer = React.createClass({
         render() {
             var columns = [];
 
@@ -21,7 +31,7 @@
                     note={note}
                     step={index}
                     key={index}
-                    onNoteChange={this.handleNoteChange}
+                    onNoteChange={this.handleNoteChange.bind(this)}
                     active={index === this.state.currentStep &&
                         this.state.on}
                     />);
@@ -44,30 +54,21 @@
                         {columns}
                     </div>
                     <div className="transport">
-                        <button onClick = {this.toggleSound}>{
+                        <button onClick = {this.toggleSound.bind(this)}>{
                             this.state.on ? 'off' : 'on'
                         }</button>
-                        <button onClick = {this.stepForward}>Step</button>
-			<button onClick = {this.startOrStop}>{
+                        <button onClick = {this.stepForward.bind(this)}>Step</button>
+			<button onClick = {this.startOrStop.bind(this)}>{
 			    this.state.started ? 'stop' : 'start'
 			}</button>
                     </div>
                 </div>
             );
-        },
+        }
 
         componentWillMount() {
             this.synth = new SynthEngine();
-        },
-
-        getInitialState() {
-            return {
-                pattern: [0, 1, 2, 3, 4, 5, 6, 7],
-                currentStep: 0,
-                on: false,
-		started: false
-            };
-        },
+        }
 
         handleNoteChange(step, note) {
             var pattern = this.state.pattern.slice();
@@ -75,28 +76,31 @@
             this.setState({
                 pattern: pattern
             });
-        },
+        }
 
         stepForward() {
             var nextStep = this.state.currentStep === 7
                 ? 0 : this.state.currentStep + 1;
             this.setState({currentStep: nextStep});
-        },
+        }
 
         toggleSound() {
             this.setState({
                 on: !this.state.on
             });
-        },
+        }
+
 	startSequence() {
             this.clock = new Clock(8, 140);
-	    this.clock.start(this.stepForward);
+	    this.clock.start(this.stepForward.bind(this));
 	    this.setState({started: true});
-	},
+	}
+
 	stopSequence() {
 	    this.clock.stop();
 	    this.setState({started: false});
-	},
+	}
+
 	startOrStop() {
 	    if (!this.state.started) {
 	        this.startSequence();
@@ -104,8 +108,9 @@
 		this.stopSequence();
 	    }
 	} 
-    });
-    var StepColumn = React.createClass({
+    }
+    
+    class StepColumn extends React.Component {
         render() {
             var buttons = [];
             for (var i = 7; i >= 0; i--) {
@@ -123,12 +128,12 @@
                     {buttons}
                 </div>
             );
-        },
+        }
 
         handleChange(note) {
             this.props.onNoteChange(this.props.step, note);
         }
-    });
+    }
 
     React.render(<Synth />, document.getElementById('synth'));
     
