@@ -1,6 +1,6 @@
-insert keyMirror from ('keyMirror');
+import keyMirror from 'keyMirror';
 
-export keyMirror({
+export default keyMirror({
     SYNTH_NOTE_CHANGE: null,
     SYNTH_STEP: null,
     SYNTH_START: null,

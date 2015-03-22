@@ -1,3 +1,5 @@
+let aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
+
 export default class Synth {
 
     /**
@@ -15,12 +17,12 @@ export default class Synth {
      * stops the previous note if it exists (Sequencer is
      * monophonic).
      *
-     * @param {number} note Frequency value (in hertz) for the 
-     * note to be played.  
+     * @param {number} note Frequency value (in hertz) for the
+     * note to be played.
      **/
     playNote(note) {
-        var newOsc = this.ctx.createOscillator();
-        newOsc.frequency.value = note;
+        let newOsc = this.ctx.createOscillator();
+        newOsc.frequency.value = aMinorNotes[note];
 
         //stop the last note if it exists
         this.stopLastNote();
@@ -28,10 +30,10 @@ export default class Synth {
         //connect and play the new note.
         newOsc.connect(this.ctx.destination);
         newOsc.start();
-        
+
         this.currentOsc = newOsc;
     }
-    
+
     /**
      * stop the last note
      **/

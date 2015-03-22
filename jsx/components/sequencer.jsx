@@ -2,18 +2,21 @@ import React from 'react';
 import Clock from '../clock';
 import SynthEngine from '../synth';
 import StepColumn from './stepcolumn';
+import SynthStore from '../stores/synthstore';
+import TransportStore from '../stores/transportstore';
 
-var aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
+function getStateFromStores() {
+    return {
+        pattern: SynthStore.getSequence(),
+        currentStep: TransportStore.getCurrentStep(),
+        started: TransportStore.isSequenceStarted()
+    }
+}
 
 export default class Sequencer extends React.Component {
     constructor() {
         super();
-        this.state =  {
-            pattern: [0, 1, 2, 3, 4, 5, 6, 7],
-            currentStep: 0,
-            on: false,
-            started: false
-        }
+        this.state = getStateFromStores();
     }
 
     render() {
@@ -24,15 +27,14 @@ export default class Sequencer extends React.Component {
                 note={note}
                 step={index}
                 key={index}
-                onNoteChange={this.handleNoteChange.bind(this)}
                 active={index === this.state.currentStep &&
-                    this.state.on}
+                    this.state.started}
                 />);
         });
 
         if (this.synth) {
-            if (this.state.on) {
-                this.synth.playNote(aMinorNotes[this.state.pattern[this.state.currentStep]]);
+            if (this.state.started) {
+                this.synth.playNote(this.state.pattern[this.state.currentStep]);
             } else {
                 this.synth.stopLastNote();
             }
@@ -40,17 +42,10 @@ export default class Sequencer extends React.Component {
 
         return (
             <div className="Sequencer">
-                <div className="display">
-                    {aMinorNotes[this.state.pattern[this.state.currentStep]]}
-                </div>
                 <div className="steps-wrapper">
                     {columns}
                 </div>
                 <div className="transport">
-                    <button onClick = {this.toggleSound.bind(this)}>{
-                        this.state.on ? 'off' : 'on'
-                    }</button>
-                    <button onClick = {this.stepForward.bind(this)}>Step</button>
                     <button onClick = {this.startOrStop.bind(this)}>{
                         this.state.started ? 'stop' : 'start'
                     }</button>
@@ -61,6 +56,13 @@ export default class Sequencer extends React.Component {
 
     componentWillMount() {
         this.synth = new SynthEngine();
+        SynthStore.addChangeListener(this.onSequenceChange.bind(this));
+    }
+
+    onSequenceChange() {
+        this.setState({
+            pattern: SynthStore.getSequence()
+        })
     }
 
     handleNoteChange(step, note) {
@@ -77,12 +79,6 @@ export default class Sequencer extends React.Component {
         this.setState({currentStep: nextStep});
     }
 
-    toggleSound() {
-        this.setState({
-            on: !this.state.on
-        });
-    }
-
     startSequence() {
         this.clock = new Clock(8, 140);
         this.clock.start(this.stepForward.bind(this));
@@ -91,7 +87,7 @@ export default class Sequencer extends React.Component {
 
     stopSequence() {
         this.clock.stop();
-        this.setState({started: false});
+        this.setState({started: false, currentStep: 0 });
     }
 
     startOrStop() {
@@ -100,5 +96,5 @@ export default class Sequencer extends React.Component {
         } else {
             this.stopSequence();
         }
-    } 
+    }
 }

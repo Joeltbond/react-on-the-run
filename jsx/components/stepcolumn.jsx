@@ -1,4 +1,5 @@
 import React from 'react';
+import SynthActions from '../actions/synthactions';
 
 export default class StepColumn extends React.Component {
     render() {
@@ -8,7 +9,7 @@ export default class StepColumn extends React.Component {
                 data-note={i}
                 checked={i === this.props.note}
                 key={i}
-                onChange={this.handleChange.bind(this, i)}
+                onChange={this.handleNoteChange.bind(this, i)}
                 />);
         }
         return (
@@ -20,7 +21,7 @@ export default class StepColumn extends React.Component {
         );
     }
 
-    handleChange(note) {
-        this.props.onNoteChange(this.props.step, note);
+    handleNoteChange(note) {
+        SynthActions.changeNote(this.props.step, note);
     }
 }
