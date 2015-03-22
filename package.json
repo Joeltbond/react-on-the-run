@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "flux": "^2.0.1",
+    "keymirror": "^0.1.1",
     "react": "^0.13.1"
   },
   "eslintConfig": {
