@@ -1,12 +1,15 @@
 import AppDispatcher from '../dispatcher/appdispatcher';
 import {EventEmitter} from 'events';
-import SynthConstants from '../constants/constants';
+import Clock from '../clock';
+import Constants from '../constants/constants';
+import TransportActions from '../actions/transportactions'
 import assign from 'object-assign';
 
 let CHANGE_EVENT = 'change';
 
 let currentStep = 0;
 let sequenceStarted = false;
+var clock;
 
 /**
  * increment the current step in the sequence
@@ -17,7 +20,22 @@ function stepForward() {
 	currentStep = shouldRestart ? 0 : currentStep + 1;
 }
 
-export default assign({}, EventEmitter.prototype, {
+function startSequence() {
+	sequenceStarted = true;
+	clock = new Clock(16, 140);
+	clock.start(TransportActions.stepTransport);
+}
+
+function stopSequence() {
+	sequenceStarted = false;
+	clock.stop();
+}
+
+function resetSequence() {
+	currentStep = 0;
+}
+
+var TransportStore = assign({}, EventEmitter.prototype, {
 	getCurrentStep: function () {
 		return currentStep;
 	},
@@ -41,19 +59,24 @@ export default assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
 	switch(action.actionType) {
-		case SynthConstants.SYNTH_STEP:
-		stepForward();
-		break;
-
-		case SynthConstants.SYNTH_START:
+		case Constants.TRANSPORT_START:
 	    startSequence();
+	    TransportStore.emitChange();
 	    break;
 
-	    case SynthConstants.SYNTH_STOP:
+	    case Constants.TRANSPORT_STOP:
 	    stopSequence();
+	    TransportStore.emitChange();
+	    resetSequence();
 	    break;
+
+	    case Constants.TRANSPORT_STEP:
+	    stepForward();
+	    TransportStore.emitChange();
 
 		default:
 		//no op
 	}
 });
+
+export default TransportStore;

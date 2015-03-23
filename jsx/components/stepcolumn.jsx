@@ -1,5 +1,5 @@
 import React from 'react';
-import SynthActions from '../actions/synthactions';
+import PatternActions from '../actions/patternactions';
 
 export default class StepColumn extends React.Component {
     render() {
@@ -22,6 +22,6 @@ export default class StepColumn extends React.Component {
     }
 
     handleNoteChange(note) {
-        SynthActions.changeNote(this.props.step, note);
+        PatternActions.changeNote(this.props.step, note);
     }
 }

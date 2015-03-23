@@ -1,12 +1,11 @@
 import AppDispatcher from '../dispatcher/appdispatcher';
 import {EventEmitter} from 'events';
-import SynthConstants from '../constants/constants';
+import Constants from '../constants/constants';
 import assign from 'object-assign';
 
 let CHANGE_EVENT = 'change';
 
-let sequence = [0, 1, 2, 3, 4, 5, 6, 7];
-let soundOn = false;
+let pattern = [0, 1, 2, 3, 4, 5, 6, 7];
 
 /**
  * change a note at a given index
@@ -14,12 +13,12 @@ let soundOn = false;
  * @param  {number} note value to update the step with (0-7)
  */
 function changeNote(step, note) {
-	sequence[step] = note;
+	pattern[step] = note;
 }
 
-let SynthStore =  assign({}, EventEmitter.prototype, {
-	getSequence: function () {
-		return sequence;
+let PatternStore = assign({}, EventEmitter.prototype, {
+	getPattern: function () {
+		return pattern;
 	},
 
 	emitChange: function () {
@@ -36,10 +35,10 @@ let SynthStore =  assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
-	if (action.actionType === SynthConstants.SYNTH_NOTE_CHANGE) {
+	if (action.actionType === Constants.PATTERN_NOTE_CHANGE) {
 		changeNote(action.step, action.note);
-		SynthStore.emitChange();
+		PatternStore.emitChange();
 	}
 });
 
-export default SynthStore;
+export default PatternStore;

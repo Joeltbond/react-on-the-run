@@ -1,10 +1,10 @@
 import keyMirror from 'keyMirror';
 
 export default keyMirror({
-    SYNTH_NOTE_CHANGE: null,
-    SYNTH_STEP: null,
-    SYNTH_START: null,
-    SYTHN_STOP: null,
-    SYNTH_PLAY_SOUND: null,
-    SYNTH_MUTE_SOUND: null
+    PATTERN_NOTE_CHANGE: null,
+    TRANSPORT_STEP: null,
+    TRANSPORT_START: null,
+    TRANSPORT_STOP: null,
+    TRANSPORT_BPM_CHANGE: null,
+    TRANSPORT_DIVISION_CHANGE: null
 });

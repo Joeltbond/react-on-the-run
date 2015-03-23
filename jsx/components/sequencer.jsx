@@ -2,12 +2,13 @@ import React from 'react';
 import Clock from '../clock';
 import SynthEngine from '../synth';
 import StepColumn from './stepcolumn';
-import SynthStore from '../stores/synthstore';
+import Transport from './transport';
+import PatternStore from '../stores/patternstore';
 import TransportStore from '../stores/transportstore';
 
 function getStateFromStores() {
     return {
-        pattern: SynthStore.getSequence(),
+        pattern: PatternStore.getPattern(),
         currentStep: TransportStore.getCurrentStep(),
         started: TransportStore.isSequenceStarted()
     }
@@ -32,12 +33,10 @@ export default class Sequencer extends React.Component {
                 />);
         });
 
-        if (this.synth) {
-            if (this.state.started) {
-                this.synth.playNote(this.state.pattern[this.state.currentStep]);
-            } else {
-                this.synth.stopLastNote();
-            }
+        if (this.state.started) {
+            this.synth.playNote(this.state.pattern[this.state.currentStep]);
+        } else {
+            this.synth.stopLastNote();
         }
 
         return (
@@ -45,56 +44,27 @@ export default class Sequencer extends React.Component {
                 <div className="steps-wrapper">
                     {columns}
                 </div>
-                <div className="transport">
-                    <button onClick = {this.startOrStop.bind(this)}>{
-                        this.state.started ? 'stop' : 'start'
-                    }</button>
-                </div>
+                <Transport />
             </div>
         );
     }
 
     componentWillMount() {
         this.synth = new SynthEngine();
-        SynthStore.addChangeListener(this.onSequenceChange.bind(this));
+        PatternStore.addChangeListener(this.onPatternChange.bind(this));
+        TransportStore.addChangeListener(this.onTransportChange.bind(this));
     }
 
-    onSequenceChange() {
+    onPatternChange() {
         this.setState({
-            pattern: SynthStore.getSequence()
+            pattern: PatternStore.getPattern()
         })
     }
 
-    handleNoteChange(step, note) {
-        var pattern = this.state.pattern.slice();
-        pattern[step] = note;
+    onTransportChange() {
         this.setState({
-            pattern: pattern
-        });
-    }
-
-    stepForward() {
-        var nextStep = this.state.currentStep === 7
-            ? 0 : this.state.currentStep + 1;
-        this.setState({currentStep: nextStep});
-    }
-
-    startSequence() {
-        this.clock = new Clock(8, 140);
-        this.clock.start(this.stepForward.bind(this));
-        this.setState({started: true});
-    }
-
-    stopSequence() {
-        this.clock.stop();
-        this.setState({started: false, currentStep: 0 });
-    }
-
-    startOrStop() {
-        if (!this.state.started) {
-            this.startSequence();
-        } else {
-            this.stopSequence();
-        }
+            currentStep: TransportStore.getCurrentStep(),
+            started: TransportStore.isSequenceStarted()
+        })
     }
 }
