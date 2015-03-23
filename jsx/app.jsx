@@ -1,4 +1,4 @@
 import React from 'react';
-import Synth from './components/synth';
+import SynthApp from './components/synthapp';
 
-React.render(<Synth />, document.getElementById('synth'));
+React.render(<SynthApp />, document.getElementById('synth'));
