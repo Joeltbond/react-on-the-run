@@ -9,19 +9,19 @@
 
     gulp.task('react', function () {
         browserify({
-            entries: './jsx/app.jsx',
-            extensions: ['.jsx']
+            entries: './js/app.js',
+            extensions: ['.jsx', '.js']
         })
         .transform(babelify)
         .bundle()
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest('js'));
+        .pipe(gulp.dest('dist'));
     });
 
     gulp.task('less', function () {
         return gulp.src('less/styles.less')
             .pipe(less())
-            .pipe(gulp.dest('css'));
+            .pipe(gulp.dest('dist'));
     });
 
     gulp.task('watch', function () {
