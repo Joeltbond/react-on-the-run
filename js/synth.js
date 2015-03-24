@@ -1,5 +1,14 @@
+// Scales
+// ======
+// For now the synth can play eight notes that corespond to a given
+// scale. I hope to make this more flexible in the future and allow
+// the user to control this. For now we just have A minor...
 let aMinorNotes = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440];
 
+// Synth Class
+// ===========
+// A wrapper class for the Web Audio Api. Produces a monophonic
+// synthesizor that stops the previous note as new notes begin to play.
 export default class Synth {
 
     /**

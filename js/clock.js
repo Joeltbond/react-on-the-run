@@ -1,3 +1,8 @@
+// Clock Class
+// -----------
+// A wrapper class for window.setInterval that uses
+// given beats per minute and note values as the basis for timing
+// for callback invocation.
 export default class Clock {
     /**
      * @constructor
@@ -26,6 +31,7 @@ export default class Clock {
     start(callback) {
         this.timer = window.setInterval(callback, this.speed);
     }
+
 
     /**
      * Clear the timer.

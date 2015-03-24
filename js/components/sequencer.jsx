@@ -33,6 +33,9 @@ export default class Sequencer extends React.Component {
                 />);
         });
 
+        // For now the sound itself is triggered from this sequencer component
+        // itself. In the future this should probably be abstracted to a
+        // class that is separate from the UI.
         if (this.state.started) {
             this.synth.playNote(this.state.pattern[this.state.currentStep]);
         } else {
