@@ -1,7 +1,14 @@
+@button-color:         #eeeeee;
+@border-color:         #cccccc;
+@note-color:           #cd8181;
+@active-note-color:    #77b677;
+@active-step-color:    #e7e7e7
+
+
 .cf:before,
 .cf:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+    content: " ";
+    display: table;
 }
 
 .cf:after {
@@ -31,12 +38,12 @@ button {
   -webkit-appearance: none;
   outline: none;
   border: none;
-  background-color: #EEE;
+  background-color: @button-color;
 }
 
 .steps-wrapper {
-  border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-bottom: 1px solid @border-color;
+  border-right: 1px solid @border-color;
   display: inline-block;
 }
 .StepColumn {
@@ -47,21 +54,21 @@ button {
 }
 input[type="radio"] {
   -webkit-appearance: none;
-  border-left: 1px solid #ccc;
-  border-top: 1px solid #ccc;
+  border-left: 1px solid @border-color;
+  border-top: 1px solid @border-color;
   display: block;
   height: 40px;
   margin: 0;
   outline: none;
   width: 40px;
   &:checked {
-    background-color: #CD8181;
+    background-color: @note-color;
   }
 }
 .StepColumn.active input[type="radio"] {
-  background-color: #e7e7e7;
+  background-color: @active-step-color;
   &:checked {
-    background-color: #77B677;
+    background-color: @active-note-color;
   }
 }
 
