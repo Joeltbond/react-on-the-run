@@ -1,7 +1,7 @@
-import React from 'react';
-import PatternActions from '../actions/patternactions';
+import React, { Component } from "react";
+import PatternActions from "../actions/patternactions";
 
-export default class StepColumn extends React.Component {
+export default class StepColumn extends Component {
   render() {
     var buttons = [];
     for (var i = 7; i >= 0; i--) {
@@ -18,9 +18,9 @@ export default class StepColumn extends React.Component {
     return (
       <div
         className={
-          'StepColumn col-' +
+          "StepColumn col-" +
           this.props.step +
-          (this.props.active ? ' active' : '')
+          (this.props.active ? " active" : "")
         }
       >
         {buttons}

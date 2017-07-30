@@ -1,11 +1,10 @@
-import AppDispatcher from '../dispatcher/appdispatcher';
-import { EventEmitter } from 'events';
-import Clock from '../clock';
-import Constants from '../constants/constants';
-import TransportActions from '../actions/transportactions';
-import assign from 'object-assign';
+import AppDispatcher from "../dispatcher";
+import { EventEmitter } from "events";
+import Clock from "../clock";
+import { TRANSPORT_START, TRANSPORT_STOP, TRANSPORT_STEP } from "../constants";
+import TransportActions from "../actions/transportactions";
 
-let CHANGE_EVENT = 'change';
+let CHANGE_EVENT = "change";
 
 let currentStep = 0;
 let sequenceStarted = false;
@@ -35,7 +34,7 @@ function resetSequence() {
   currentStep = 0;
 }
 
-var TransportStore = assign({}, EventEmitter.prototype, {
+var TransportStore = Object.assign({}, EventEmitter.prototype, {
   getCurrentStep: function() {
     return currentStep;
   },
@@ -59,20 +58,21 @@ var TransportStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
-    case Constants.TRANSPORT_START:
+    case TRANSPORT_START:
       startSequence();
       TransportStore.emitChange();
       break;
 
-    case Constants.TRANSPORT_STOP:
+    case TRANSPORT_STOP:
       stopSequence();
       TransportStore.emitChange();
       resetSequence();
       break;
 
-    case Constants.TRANSPORT_STEP:
+    case TRANSPORT_STEP:
       stepForward();
       TransportStore.emitChange();
+      break;
 
     default:
     //no op
