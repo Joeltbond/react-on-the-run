@@ -4,7 +4,7 @@
 // given beats per minute and note values as the basis for timing
 // for callback invocation.
 export default class Clock {
-    /**
+  /**
      * @constructor
      *
      * Converts given note value and beats per minute (bpm) value
@@ -17,26 +17,25 @@ export default class Clock {
      *
      * @param {number} bpm Beats Per minute.
      * */
-    constructor(noteType, bpm) {
-        this.speed = 60000/(bpm * (noteType / 4));
-    }
+  constructor(noteType, bpm) {
+    this.speed = 60000 / (bpm * (noteType / 4));
+  }
 
-    /**
+  /**
      * Repeatedly invoke a callback at the speed calculated by
      * th constructor.
      *
      * @param {callback} callback The function to be invoked
      * on the beat.
      */
-    start(callback) {
-        this.timer = window.setInterval(callback, this.speed);
-    }
+  start(callback) {
+    this.timer = window.setInterval(callback, this.speed);
+  }
 
-
-    /**
+  /**
      * Clear the timer.
      * */
-    stop() {
-        window.clearInterval(this.timer)
-    }
+  stop() {
+    window.clearInterval(this.timer);
+  }
 }

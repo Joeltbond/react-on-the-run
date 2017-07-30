@@ -1,8 +1,8 @@
 import AppDispatcher from '../dispatcher/appdispatcher';
-import {EventEmitter} from 'events';
+import { EventEmitter } from 'events';
 import Clock from '../clock';
 import Constants from '../constants/constants';
-import TransportActions from '../actions/transportactions'
+import TransportActions from '../actions/transportactions';
 import assign from 'object-assign';
 
 let CHANGE_EVENT = 'change';
@@ -16,67 +16,67 @@ var clock;
  * if we hit the end we go back to 0
  */
 function stepForward() {
-	let shouldRestart = currentStep === 7;
-	currentStep = shouldRestart ? 0 : currentStep + 1;
+  let shouldRestart = currentStep === 7;
+  currentStep = shouldRestart ? 0 : currentStep + 1;
 }
 
 function startSequence() {
-	sequenceStarted = true;
-	clock = new Clock(16, 140);
-	clock.start(TransportActions.stepTransport);
+  sequenceStarted = true;
+  clock = new Clock(16, 140);
+  clock.start(TransportActions.stepTransport);
 }
 
 function stopSequence() {
-	sequenceStarted = false;
-	clock.stop();
+  sequenceStarted = false;
+  clock.stop();
 }
 
 function resetSequence() {
-	currentStep = 0;
+  currentStep = 0;
 }
 
 var TransportStore = assign({}, EventEmitter.prototype, {
-	getCurrentStep: function () {
-		return currentStep;
-	},
+  getCurrentStep: function() {
+    return currentStep;
+  },
 
-	isSequenceStarted: function () {
-		return sequenceStarted;
-	},
+  isSequenceStarted: function() {
+    return sequenceStarted;
+  },
 
-	emitChange: function () {
-		this.emit(CHANGE_EVENT);
-	},
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
 
-	addChangeListener: function (callback) {
-		this.on(CHANGE_EVENT, callback);
-	},
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
 
-	removeChangeListener: function (callback) {
-		this.removeListener(CHANGE_EVENT, callback);
-	}
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
 });
 
 AppDispatcher.register(function(action) {
-	switch(action.actionType) {
-		case Constants.TRANSPORT_START:
-	    startSequence();
-	    TransportStore.emitChange();
-	    break;
+  switch (action.actionType) {
+    case Constants.TRANSPORT_START:
+      startSequence();
+      TransportStore.emitChange();
+      break;
 
-	    case Constants.TRANSPORT_STOP:
-	    stopSequence();
-	    TransportStore.emitChange();
-	    resetSequence();
-	    break;
+    case Constants.TRANSPORT_STOP:
+      stopSequence();
+      TransportStore.emitChange();
+      resetSequence();
+      break;
 
-	    case Constants.TRANSPORT_STEP:
-	    stepForward();
-	    TransportStore.emitChange();
+    case Constants.TRANSPORT_STEP:
+      stepForward();
+      TransportStore.emitChange();
 
-		default:
-		//no op
-	}
+    default:
+    //no op
+  }
 });
 
 export default TransportStore;
