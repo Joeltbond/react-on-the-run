@@ -1,10 +1,10 @@
-import React from 'react';
-import Clock from '../clock';
-import SynthEngine from '../synth';
-import StepColumn from './stepcolumn';
-import Transport from './transport';
-import PatternStore from '../stores/patternstore';
-import TransportStore from '../stores/transportstore';
+import React, { Component } from "react";
+import SynthEngine from "./synth";
+import StepColumn from "./components/StepColumn";
+import Transport from "./components/Transport";
+import PatternStore from "./stores/patternstore";
+import TransportStore from "./stores/transportstore";
+import "./App.css";
 
 function getStateFromStores() {
   return {
@@ -14,7 +14,7 @@ function getStateFromStores() {
   };
 }
 
-export default class Sequencer extends React.Component {
+export default class Sequencer extends Component {
   constructor() {
     super();
     this.state = getStateFromStores();

@@ -1,11 +1,10 @@
-import AppDispatcher from '../dispatcher/appdispatcher';
-import { EventEmitter } from 'events';
-import Constants from '../constants/constants';
-import assign from 'object-assign';
+import AppDispatcher from "../dispatcher";
+import { EventEmitter } from "events";
+import { PATTERN_NOTE_CHANGE } from "../constants";
 
-let CHANGE_EVENT = 'change';
+const CHANGE_EVENT = "change";
 
-let pattern = [0, 1, 2, 3, 4, 5, 6, 7];
+const pattern = [0, 1, 2, 3, 4, 5, 6, 7];
 
 /**
  * change a note at a given index
@@ -16,7 +15,7 @@ function changeNote(step, note) {
   pattern[step] = note;
 }
 
-let PatternStore = assign({}, EventEmitter.prototype, {
+let PatternStore = Object.assign({}, EventEmitter.prototype, {
   getPattern: function() {
     return pattern;
   },
@@ -35,7 +34,7 @@ let PatternStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
-  if (action.actionType === Constants.PATTERN_NOTE_CHANGE) {
+  if (action.actionType === PATTERN_NOTE_CHANGE) {
     changeNote(action.step, action.note);
     PatternStore.emitChange();
   }

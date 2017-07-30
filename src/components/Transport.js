@@ -1,7 +1,6 @@
-import React from 'react';
-import Clock from '../clock';
-import TransportActions from '../actions/transportactions';
-import TransportStore from '../stores/transportstore';
+import React from "react";
+import TransportActions from "../actions/transportactions";
+import TransportStore from "../stores/transportstore";
 
 function getStateFromStore() {
   return {
@@ -19,7 +18,7 @@ export default class Transport extends React.Component {
     return (
       <div className="transport">
         <button onClick={this.startOrStop.bind(this)}>
-          {this.state.started ? 'stop' : 'start'}
+          {this.state.started ? "stop" : "start"}
         </button>
       </div>
     );
