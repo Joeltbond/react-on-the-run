@@ -2,7 +2,7 @@
   "name": "react-synth-redo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://joeltbond.github.io/react-synth",
+  "homepage": "https://joeltbond.github.io/react-on-the-run",
   "dependencies": {
     "flux": "^2.0.1",
     "react": "^15.6.1",
